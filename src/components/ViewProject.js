@@ -1,6 +1,6 @@
 import React, {useState, useContext, useEffect} from 'react'
 import '../stylesheets/displayProjects.css'
-import { Row, Col, Container, Card, CardGroup, ProgressBar, Navbar, Nav, NavDropdown, Form, Image, Button, ListGroup, Offcanvas, InputGroup, Modal } from 'react-bootstrap';
+import { Container, Button, ListGroup, Modal } from 'react-bootstrap';
 import { UserContext } from '../App'
 
 const ViewProject = ({projectData}) => {
@@ -29,7 +29,7 @@ const ViewProject = ({projectData}) => {
                 let selectedProjectId = projectData._id;
                 let selectedProjectCreator = projectData.projectCreator;
 
-                const response = await fetch('/showProjectPhases', {
+                const response = await fetch('http://localhost:8080/showProjectPhases', {
                     method: 'POST',
                     headers: {
                         'Content-Type' : 'application/json' 
@@ -95,7 +95,7 @@ const ViewProject = ({projectData}) => {
     const handleCompletedPhases = async (e) =>{
         let selectedProjectId = e.target.id;
         try {
-            const response = await fetch('/phaseCompletedNotification', {
+            const response = await fetch('http://localhost:8080/phaseCompletedNotification', {
                 method: 'POST',
                 headers: {
                     'Content-Type' : 'application/json' 
@@ -117,32 +117,6 @@ const ViewProject = ({projectData}) => {
         setSmShow(false);
     }
 
-
-    const handleDownloadFile = async (e) =>{
-        let fileId = e.target.id;
-        console.log(fileId)
-        let x = document.getElementById("2abc")
-        try {
-            const response = await fetch(`/downloadFile/${fileId}`);
-
-            const file = await response.blob();
-            const url = window.URL.createObjectURL(file);
-
-            const a = document.createElement('a');
-            a.style.display = 'none';
-            a.href = url;
-            a.download = fileId;
-            // document.body.appendChild(a);
-            x.appendChild(a);
-            a.click();
-            // window.URL.revokeObjectURL(url);
-
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
-  
     return (
     <>
     
@@ -185,16 +159,6 @@ const ViewProject = ({projectData}) => {
                                     Phase {element.PhaseNum} --- {element.PhaseTitle}
                                 </ListGroup.Item>
                             )}
-                            <br></br> 
-                            <h6><b>Files: </b> </h6>
-                            {projectData.projectFiles.map((element, index)=>
-                                <ListGroup.Item key={index} id={index + "abc"} className='phaseListItem'>
-                                    File Name: {element.fileName}
-                                    <br></br>
-                                    File Size: {Math.floor(element.fileSize/10000) + 'KB'}
-                                    <Button className='downloadBtn' id={element._id} onClick={handleDownloadFile}><i className="fa fa-download" id={element._id} onClick={handleDownloadFile}></i></Button>
-                                </ListGroup.Item>
-                            )}
                             <br></br>
                             <h6><b>My Assigned Phases & Tasks: </b> </h6>
                             {myAssignedPhases ?
@@ -223,7 +187,6 @@ const ViewProject = ({projectData}) => {
                         <ListGroup.Item className='phaseListItem'><b>Type: </b> </ListGroup.Item>
                         <ListGroup.Item className='phaseListItem'><b>Members: </b> </ListGroup.Item>
                         <ListGroup.Item className='phaseListItem'><b>Phases: </b> </ListGroup.Item>
-                        <ListGroup.Item className='phaseListItem'><b>Files: </b> </ListGroup.Item>
                     </ListGroup>
                 }
                 

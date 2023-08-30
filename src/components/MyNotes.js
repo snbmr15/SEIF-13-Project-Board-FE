@@ -1,6 +1,6 @@
 import React, {useState, useLayoutEffect, useEffect} from 'react'
 import '../stylesheets/displayProjects.css'
-import { Row, Col, Container, Card, CardGroup, ProgressBar, Navbar, Nav, NavDropdown, Form, Image, Button, ListGroup, Offcanvas, InputGroup, Modal } from 'react-bootstrap';
+import { Row, Col, Container, ListGroup, Modal } from 'react-bootstrap';
 import CreateNotes from './CreateNotes';
 import UpdateNotes from './UpdateNotes';
 import DeleteNote from './DeleteNote';
@@ -22,7 +22,7 @@ const MyNotes = () => {
 
     const getNotes = async () =>{
       try {
-          const response = await fetch('/getallNotes', {
+          const response = await fetch('http://localhost:8080/getNotes', {
               method: 'GET',
           })
 

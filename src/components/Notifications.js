@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useContext} from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
 import '../stylesheets/notifications.css'
-import { Row, Col, Container, InputGroup, Button, Modal, FormControl, ListGroup, Badge } from 'react-bootstrap';
+import { Row, Col, Container, Button, Modal, ListGroup } from 'react-bootstrap';
 import SearchMembers from './SearchMembers';
 import image_S1 from '../images/abstract10.png'
 
@@ -21,7 +21,7 @@ const Notifications = () => {
 
     const requestSentBYMe = async () =>{
       try {
-          const response = await fetch('/requestSentBYMe', { 
+          const response = await fetch('http://localhost:8080/requestsByMe', { 
               method: 'GET',
           })
 
@@ -38,7 +38,7 @@ const Notifications = () => {
 
     const getRequest = async () =>{
         try {
-            const response = await fetch('/getRequest', { 
+            const response = await fetch('http://localhost:8080/getFriendRequests', { 
                 method: 'GET',
             })
 
@@ -61,7 +61,7 @@ const Notifications = () => {
     const handleAcceptBtn = async (e) =>{
         let personId = e.target.id;
         try {
-          const response = await fetch('/acceptRequest', {
+          const response = await fetch('http://localhost:8080/acceptFriendRequest', {
             method: 'POST',
             headers: {
                 'Content-Type' : 'application/json' 
@@ -90,7 +90,7 @@ const Notifications = () => {
     const handleCancelRequest = async (e) =>{
       let personId = e.target.id;
       try {
-        const response = await fetch('/cancelRequest', {
+        const response = await fetch('http://localhost:8080/rejectFriendRequest', {
           method: 'POST',
           headers: {
               'Content-Type' : 'application/json' 

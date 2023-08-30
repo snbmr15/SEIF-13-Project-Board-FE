@@ -1,7 +1,7 @@
 import React, {useState, useContext, useEffect} from 'react'
 import '../stylesheets/displayProjects.css'
 import Dropdown from 'react-bootstrap/Dropdown';
-import { Row, Col, Container, Card, CardGroup, ProgressBar, Navbar, Nav, NavDropdown, Form, Image, Button, ListGroup, Offcanvas, InputGroup, Modal } from 'react-bootstrap';
+import { Row, Col, Container, Button, ListGroup, Modal } from 'react-bootstrap';
 import image_S1 from '../images/abstract10.png'
 import { UserContext } from '../App'
 
@@ -106,7 +106,7 @@ const AssignPhases = ({projectData}) => {
     const handleAssignPhases = async (e) =>{
         let projectId = e.target.id;
         try {
-            const response = await fetch('/assignProjectPhases', {
+            const response = await fetch('http://localhost:8080/assignProjectPhases', {
                 method: 'POST',
                 headers: {
                     'Content-Type' : 'application/json' 
@@ -135,7 +135,7 @@ const AssignPhases = ({projectData}) => {
                 let selectedProjectId = projectData.currentProject._id;
                 let selectedProjectCreator = projectData.currentProject.projectCreator;
 
-                const response = await fetch('/showProjectPhases', {
+                const response = await fetch('http://localhost:8080/showProjectPhases', {
                     method: 'POST',
                     headers: {
                         'Content-Type' : 'application/json' 
@@ -182,7 +182,7 @@ const AssignPhases = ({projectData}) => {
     const handleUpdatePhaseBtn = async () =>{
         if(selectedphaseForUpdate){
             try {
-                const response = await fetch('/updatePhaseToCompleted', {
+                const response = await fetch('http://localhost:8080/updatePhaseToCompleted', {
                     method: 'POST',
                     headers: {
                         'Content-Type' : 'application/json' 
@@ -208,7 +208,7 @@ const AssignPhases = ({projectData}) => {
 
         if(selectedphaseForUpdate){
             try {
-                const response = await fetch('/updatePhaseToPending', {
+                const response = await fetch('http://localhost:8080/updatePhaseToPending', {
                     method: 'POST',
                     headers: {
                         'Content-Type' : 'application/json' 
@@ -302,10 +302,6 @@ const AssignPhases = ({projectData}) => {
                 
             </Modal.Footer>
         </Modal>
-
-
-
-
 
 
         {/* add Members */}

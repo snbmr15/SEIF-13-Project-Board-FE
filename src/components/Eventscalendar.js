@@ -1,6 +1,6 @@
 import React, {useState, useLayoutEffect, useEffect} from 'react'
 import '../stylesheets/eventsCalendar.css'
-import { Row, Col,Container, Navbar, Nav, NavDropdown, Form, Image, Button, ListGroup, Offcanvas, InputGroup, Modal } from 'react-bootstrap';
+import { ListGroup, Modal } from 'react-bootstrap';
 import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid';
@@ -18,7 +18,7 @@ const Eventscalendar = () => {
 
     const showTasks = async () =>{
         try {
-          const response = await fetch('/showTasks', {
+          const response = await fetch('http://localhost:8080/showTasks', {
             method: 'GET',
         });
   
@@ -35,7 +35,7 @@ const Eventscalendar = () => {
 
   const showProjects = async () =>{
     try {
-      const response = await fetch('/getProjects', {
+      const response = await fetch('http://localhost:8080/getProjects', {
         method: 'GET',
     });
 

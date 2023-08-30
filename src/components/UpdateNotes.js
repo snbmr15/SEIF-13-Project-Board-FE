@@ -1,6 +1,6 @@
 import React, {useState, useContext, useEffect} from 'react'
 import '../stylesheets/notes.css'
-import { Row, Col, Container, Card, CardGroup, ProgressBar, Navbar, Nav, NavDropdown, Form, Image, Button, ListGroup, Offcanvas, InputGroup, Modal } from 'react-bootstrap';
+import { Container, Form, Button, ListGroup, Modal } from 'react-bootstrap';
 
 
 const UpdateNotes = ({noteData}) => {
@@ -33,7 +33,7 @@ const UpdateNotes = ({noteData}) => {
         e.preventDefault();
         if(noteTitle && noteText){
             try {
-                const response = await fetch('/updateCurrentNote', {
+                const response = await fetch('http://localhost:8080/updateCurrentNote', {
                     method: 'POST',
                     headers: {
                         'Content-Type' : 'application/json' 

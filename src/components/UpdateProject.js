@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import { useNavigate } from 'react-router-dom'
 import "../stylesheets/projects.css"
-import {Container, Form, Button, Row, Col, Badge, FloatingLabel, Popover, Dropdown, ButtonGroup, DropdownButton, OverlayTrigger, FormControl, Modal, ListGroup, InputGroup } from 'react-bootstrap';
+import {Container, Form, Button, Row, Col, FormControl, Modal, ListGroup, InputGroup } from 'react-bootstrap';
 import image_S1 from '../images/abstract10.png'
 
 
@@ -29,7 +29,6 @@ const UpdateProject = ({projectData}) => {
     const [phaseInput, setPhaseInput] = useState("");
     const [phaseEditInput, setPhaseEditInput] = useState("");
     const [desigId, setDesigId] = useState("");
-    const [projectFiles, setProjectFiles] = useState([]);
     const [projectDetails, setProjectDetails] = useState({
         projectTitle : "",
         projectDiscription : "",
@@ -47,20 +46,10 @@ const UpdateProject = ({projectData}) => {
         setProjectDetails({...projectDetails, [name]:value});
     }
 
-    
-    
-    
-    const handleFiles = (e) =>{
-        let myfiles = e.target.files 
-        console.log(myfiles)
-        setProjectFiles(myfiles);
-        
-    }
-
 
     const getFriends = async () =>{
         try {
-            const response = await fetch('/getFriends', {
+            const response = await fetch('http://localhost:8080/getFriendRequests', {
                 method: 'GET',
             })
 
@@ -131,9 +120,6 @@ const UpdateProject = ({projectData}) => {
 
             setAllfriends(newList) 
         }
-
-        
-
     }
 
 
@@ -223,29 +209,6 @@ const UpdateProject = ({projectData}) => {
 
     }
 
-
-
-
-    const removeFile = (e) =>{
-        let fileId = e.target.id;
-
-        let removeSelectedFile = projectData.currentProject.projectFiles.filter(element1 => element1._id !== fileId)
-
-        projectData.currentProject.projectFiles = removeSelectedFile
-
-        // let listedFiles = document.getElementById("filesList")
-        let selectedfile = document.getElementById("aa"+fileId)
-        console.log(selectedfile)
-        
-        while (selectedfile.hasChildNodes()) {
-            selectedfile.removeChild(selectedfile.firstChild);
-        }
-        // let x = listedFiles.removeChild(selectedfile);
-        
-    }
-
-   
-
     const handleUpdateProject = async (e) =>{
         e.preventDefault();
         console.log(membersIds)
@@ -272,17 +235,14 @@ const UpdateProject = ({projectData}) => {
         formData.append('projectId', JSON.stringify(projectData.currentProject._id))
         formData.append('projectMembers', JSON.stringify(members))
         formData.append('projectDesig', JSON.stringify(addDesig))
-        formData.append('existingFiles', JSON.stringify(projectData.currentProject.projectFiles))
         formData.append('projectPhases', JSON.stringify(updateProjectPhases))
-        for(let i=0; i < projectFiles.length; i++){
-            formData.append('projectFiles', projectFiles[i])
-        }
+
         
         console.log(updateProjectPhases)
 
         if(updateProjectPhases.length > 0){
             try {
-                const response = await fetch("/updatingProject", {
+                const response = await fetch("http://localhost:8080/updatingProject", {
                     method: "POST",
                     body: formData
                       
@@ -457,43 +417,6 @@ const UpdateProject = ({projectData}) => {
                 </Form.Group>
                 </Col>
                 
-                </Row>
-                <Row>
-                    <Col>
-                    <Form.Group className="mb-3">
-                        <Form.Label>Add files</Form.Label>
-                        <Form.Control type="file" multiple name='projectFiles' id='projectFiles' className='formInput' onChange={handleFiles}/>
-                    </Form.Group>
-
-                    {projectData.currentProject.projectFiles.length > 0 ?
-                    <>
-                    <Form.Label>Existing Files</Form.Label>
-                    <ListGroup className="filesList" >
-                        {projectData.currentProject.projectFiles.map((allfiles, index) =>
-                        <ListGroup.Item
-                            as="li"
-                            className="d-flex justify-content-between align-items-start singlefile"
-                            key={index}
-                            id={"aa"+allfiles._id}
-                        >
-                        <div className="ms-2 me-auto">
-                        <div className="fw-bold">{allfiles.fileName}</div>
-                        {Math.floor(allfiles.fileSize/1000000) + 'MB'}
-                        </div>
-                        
-                        <i className="fa fa-trash phaseTrashBtn" id={allfiles._id} onClick={removeFile}></i>
-                        
-                        </ListGroup.Item>
-                        )}
-                    </ListGroup>
-                    </>
-                    :
-
-                    <ListGroup>
-                            <ListGroup.Item className='singlefile'>No Existing Files</ListGroup.Item>
-                    </ListGroup>
-                    }
-                    </Col>
                 </Row>
                 <br></br>
                 <Row>

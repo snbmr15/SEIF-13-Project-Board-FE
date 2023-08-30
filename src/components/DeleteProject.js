@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import { useNavigate } from 'react-router-dom'
 import "../stylesheets/projects.css"
-import {Container, Form, Button, Row, Col, Badge, FloatingLabel, Popover, Dropdown, ButtonGroup, DropdownButton, OverlayTrigger, FormControl, Modal, ListGroup, InputGroup } from 'react-bootstrap';
+import { Button, Modal, ListGroup } from 'react-bootstrap';
 // import DisplayProjects from './DisplayProjects';
 
 const DeleteProject = ({projectData}) => {
@@ -18,7 +18,7 @@ const DeleteProject = ({projectData}) => {
         let selectedId = e.target.id;
         
         try {
-            const response = await fetch('/deleteProject', { 
+            const response = await fetch('http://localhost:8080/deleteProject', { 
                 method: 'POST',
                 headers: {
                     'Content-Type' : 'application/json' 

@@ -1,7 +1,7 @@
 import React, {useState, useContext, useEffect} from 'react'
 import {useNavigate} from "react-router-dom";
 import '../stylesheets/profile.css'
-import { Row, Col, Container, Card, CardGroup, ProgressBar, Navbar, Nav, NavDropdown, Form, Image, Button, ListGroup, Offcanvas, InputGroup, Modal } from 'react-bootstrap';
+import { Row, Col, Container, Button, ListGroup, Modal } from 'react-bootstrap';
 import image_S1 from '../images/abstract10.png'
 import { UserContext } from '../App'
 
@@ -14,7 +14,7 @@ const Profile = () => {
     const handleSignOut = async () =>{
 
         try{
-            const response = await fetch("/userSignOut", {
+            const response = await fetch("http://localhost:8080/userSignOut", {
                 method: "GET",
             });
             let data = await response.json();

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext, useRef } from 'react';
 import { useNavigate, NavLink } from 'react-router-dom'
-import { Row, Col,Container, Fade, Button, ListGroup, Badge } from 'react-bootstrap';
+import { Row, Col,Container, ListGroup, Badge } from 'react-bootstrap';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import '../stylesheets/todos.css'
 import TodoForm from './TodoForm';
@@ -24,7 +24,7 @@ const SideNavbar = () => {
     
     const showTasks = async () =>{
         try {
-          const response = await fetch('/showTasks', { 
+          const response = await fetch('http://localhost:8080/showTasks', { 
             method: 'GET', 
         });
   

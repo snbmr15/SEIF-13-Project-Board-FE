@@ -2,7 +2,7 @@ import React, {useState, useEffect, useContext} from 'react'
 import { useNavigate, NavLink } from 'react-router-dom'
 import '../stylesheets/messages.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Row, Col,Container, Form, Image, Button, ListGroup, Offcanvas, InputGroup, Modal } from 'react-bootstrap';
+import { Button, ListGroup, Modal } from 'react-bootstrap';
 import image_S1 from '../images/abstract10.png'
 
 const DeleteMember = () => {

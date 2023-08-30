@@ -1,6 +1,6 @@
 import React, {useState, useLayoutEffect, useEffect} from 'react'
 import '../stylesheets/displayProjects.css'
-import { Row, Col, Container, Card, CardGroup, ProgressBar, Navbar, Nav, NavDropdown, Form, Image, Button, ListGroup, Offcanvas, InputGroup, Modal } from 'react-bootstrap';
+import { Row, Col, Container, ProgressBar, Button, ListGroup, Modal } from 'react-bootstrap';
 import ViewProject from './ViewProject';
 import UpdateProject from './UpdateProject';
 import DeleteProject from './DeleteProject';
@@ -42,7 +42,7 @@ const DisplayProjects = (props) => {
 
     const getFriends = async () =>{
         try {
-            const response = await fetch('/getFriends', {
+            const response = await fetch('http://localhost:8080/getFriendRequests', {
                 method: 'GET',
             })
 
@@ -59,7 +59,7 @@ const DisplayProjects = (props) => {
 
     const showAssignedProjects = async () =>{
         try {
-          const response = await fetch('/getAssignedProjects', {
+          const response = await fetch('http://localhost:8080/getAssignedProjects', {
             method: 'GET',
         });
     
@@ -77,7 +77,7 @@ const DisplayProjects = (props) => {
 
     const showProjects = async () =>{
         try {
-          const response = await fetch('/getProjects', {
+          const response = await fetch('http://localhost:8080/getProjects', {
             method: 'GET',
         });
     

@@ -35,11 +35,6 @@ const Sidebar = () => {
             <NavLink exact to="/teamManagement" >
               <CDBSidebarMenuItem icon="user">Team Management</CDBSidebarMenuItem>
             </NavLink>
-            <NavLink exact to="/messages" >
-              <CDBSidebarMenuItem icon="chart-line">
-                Messages
-              </CDBSidebarMenuItem>
-            </NavLink>
             <NavLink exact to="/login" >
               <CDBSidebarMenuItem icon="chart-line">
                 Login

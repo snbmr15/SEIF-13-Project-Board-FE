@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import { useNavigate } from 'react-router-dom'
 import "../stylesheets/projects.css"
-import {Container, Form, Button, Row, Col, Badge, FloatingLabel, Popover, Dropdown, ButtonGroup, DropdownButton, OverlayTrigger, FormControl, Modal, ListGroup, InputGroup } from 'react-bootstrap';
+import {Container, Form, Button, Row, Col, Modal, ListGroup, InputGroup } from 'react-bootstrap';
 import image_S1 from '../images/abstract10.png'
 
 
@@ -29,7 +29,6 @@ const Projects = ({props}) => {
     const [phaseEditInput, setPhaseEditInput] = useState("");
     const [desigId, setDesigId] = useState("");
     const [projectSelected, setProjectSelected] = useState();
-    const [projectFiles, setProjectFiles] = useState([]);
     const [projectDetails, setProjectDetails] = useState({
         projectTitle : "",
         projectDiscription : "",
@@ -47,13 +46,6 @@ const Projects = ({props}) => {
         setProjectDetails({...projectDetails, [name]:value});
     }
     
-    
-    const handleFiles = (e) =>{
-        let myfiles = e.target.files 
-        console.log(myfiles)
-        setProjectFiles(myfiles);
-        
-    }
 
     const handleSubmit = async (e) =>{
         e.preventDefault();
@@ -77,14 +69,10 @@ const Projects = ({props}) => {
         formData.append('projectDesig', JSON.stringify(addDesig))
         formData.append('projectPhases', JSON.stringify(projectPhases))
         
-        for(let i=0; i < projectFiles.length; i++){
-            formData.append('projectFiles', projectFiles[i])
-        }
           
-        console.log(projectFiles)
         if(projectPhases.length > 0 && projectDetails.projectTitle && projectDetails.startDate &&  projectDetails.dueDate && projectDetails.projectDiscription && projectDetails.projectType){
             try {
-                const response = await fetch("/createNewProject", {
+                const response = await fetch("http://localhost:8080/createNewProject", {
                     method: "POST",
                     body: formData
                       
@@ -127,7 +115,7 @@ const Projects = ({props}) => {
 
     const getFriends = async () =>{
         try {
-            const response = await fetch('/getFriends', {
+            const response = await fetch('http://localhost:8080/getFriendRequests', {
                 method: 'GET',
             })
 
@@ -195,7 +183,7 @@ const Projects = ({props}) => {
             if(getProfile){
                 projectSelected.members.map((element)=>{
                     if(element.memberRef === id){
-                        window.alert("Exisiting Member")
+                        window.alert("Existing Member")
                     }
                 })
             }
@@ -381,7 +369,7 @@ const Projects = ({props}) => {
                 <Row>
                     <Col>
                     <Form.Group className="mb-3">
-                        <Form.Label>Discription</Form.Label>
+                        <Form.Label>Description</Form.Label>
                         <Form.Control as="textarea" rows={3} name='projectDiscription' className='formInput'id='projectDiscription' value={projectDetails.projectDiscription} onChange={handleInputs}/>
                     </Form.Group>
                     </Col>
@@ -399,15 +387,6 @@ const Projects = ({props}) => {
                     <Form.Control type="date" name='dueDate' id='dueDate' className='formInput' value={projectDetails.dueDate} onChange={handleInputs} placeholder="date" />
                 </Form.Group>
                 </Col>
-                
-                </Row>
-                <Row>
-                    <Col>
-                    <Form.Group className="mb-3">
-                        <Form.Label>Add files</Form.Label>
-                        <Form.Control type="file" multiple name='projectFiles' className='formInput' id='projectFiles' onChange={handleFiles}/>
-                    </Form.Group>
-                    </Col>
                 </Row>
                 <Row>
                     <Col>

@@ -21,7 +21,7 @@ const SearchMembers = ({props}) => {
     
     const getFriends = async () =>{
         try {
-            const response = await fetch('/getFriends', {
+            const response = await fetch('http://localhost:8080/getFriendRequests', {
                 method: 'GET',
             })
 
@@ -46,12 +46,11 @@ const SearchMembers = ({props}) => {
     }
 
     const handleKeyDown = async (e) =>{
-        
-
+    
         if(e.keyCode === 13 && searchInput){
 
             try {
-                const response = await fetch('/searchBar', {
+                const response = await fetch('http://localhost:8080/searchUsers', {
                     method: 'POST',
                     headers: {
                         'Content-Type' : 'application/json' 
@@ -80,7 +79,7 @@ const SearchMembers = ({props}) => {
     const handleSearchBtn = async () =>{
         
         try {
-            const response = await fetch('/searchBar', {
+            const response = await fetch('http://localhost:8080/searchUsers', {
                 method: 'POST',
                 headers: {
                     'Content-Type' : 'application/json' 
@@ -130,7 +129,7 @@ const SearchMembers = ({props}) => {
         let personId = e.target.id;        
        
         try {
-            const response = await fetch('/sendingRequest', {
+            const response = await fetch('http://localhost:8080/sendFriendRequest', {
                 method: 'POST',
                 headers: {
                     'Content-Type' : 'application/json' 
@@ -165,7 +164,7 @@ const SearchMembers = ({props}) => {
 
 
 
-    const handleCoseModal = () =>{
+    const handleCloseModal = () =>{
         setShow(false);
         setSearchInput("");
         setSearchResult([]);
@@ -180,7 +179,7 @@ const SearchMembers = ({props}) => {
             Find Members      
         </ListGroup.Item>
 
-        <Modal show={show} onHide={handleCoseModal}>
+        <Modal show={show} onHide={handleCloseModal}>
             <Modal.Header closeButton className='modalHeader'>
                 <Modal.Title>Find Members</Modal.Title>
             </Modal.Header>

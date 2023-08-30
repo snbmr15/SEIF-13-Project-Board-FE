@@ -1,6 +1,6 @@
 import React, {useState, useLayoutEffect, useEffect} from 'react'
 import '../stylesheets/displayProjects.css'
-import { Row, Col, Container, Card, CardGroup, ProgressBar, Navbar, Nav, NavDropdown, Form, Image, Button, ListGroup, Offcanvas, InputGroup, Modal } from 'react-bootstrap';
+import { Row, Col, Container, Button, ListGroup, Modal } from 'react-bootstrap';
 import Toast from 'react-bootstrap/Toast';
 
 const ProjectNotification = ({projectData}) => {
@@ -18,7 +18,7 @@ const ProjectNotification = ({projectData}) => {
         if(projectData){
             let selectedProjectId = projectData._id;
             try {
-                const response = await fetch('/getProjectNotifications', {
+                const response = await fetch('http://localhost:8080/getProjectNotifications', {
                     method: 'POST',
                     headers: {
                         'Content-Type' : 'application/json' 
@@ -44,7 +44,7 @@ const ProjectNotification = ({projectData}) => {
         if(projectData){
             let selectedProjectId = projectData._id;
             try {
-                const response = await fetch('/deleteProjectNotifications', {
+                const response = await fetch('http://localhost:8080/deleteProjectNotifications', {
                     method: 'POST',
                     headers: {
                         'Content-Type' : 'application/json' 
