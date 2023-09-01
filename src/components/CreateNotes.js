@@ -1,6 +1,7 @@
 import React, {useState } from 'react'
 import '../stylesheets/notes.css'
 import { Container, Form, Button, ListGroup, Modal } from 'react-bootstrap';
+import URL_BE from "../config"
 
 
 const CreateNotes = ({props}) => {
@@ -28,7 +29,7 @@ const CreateNotes = ({props}) => {
         console.log(details); // Add this line to log the details
     
         const token = localStorage.getItem('User').replace(/"/g, '');
-        const response = await fetch('http://localhost:8080/notes/createNote', {
+        const response = await fetch(`${URL_BE}/notes/createNote`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

@@ -4,6 +4,7 @@ import '../stylesheets/login.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Row, Container, Form, Button, Modal } from 'react-bootstrap';
 import { UserContext } from '../App';
+import URL_BE from "../config"
 
 const Signup = () => {
 
@@ -30,7 +31,7 @@ const Signup = () => {
 
         if (email && userPassword) {
             try {
-                const response = await fetch('http://localhost:8080/users/signInUser', {
+                const response = await fetch(`${URL_BE}/users/signInUser`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -76,7 +77,7 @@ const Signup = () => {
 
         if (checkName && nameRegEx && emailRegEx && checkPass) {
             try {
-                const response = await fetch("http://localhost:8080/users/createNewUser", {
+                const response = await fetch(`${URL_BE}/users/createNewUser`, {
                     method: "POST",
                     headers: {
                         'Content-Type': 'application/json' // Set Content-Type header
