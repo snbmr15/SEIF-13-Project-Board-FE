@@ -4,6 +4,8 @@ import { ListGroup, Modal } from 'react-bootstrap';
 import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid';
+import URL_BE from "../config";
+
 
 
 
@@ -20,7 +22,7 @@ const Eventscalendar = () => {
         try {
         const token = (localStorage.getItem('User')).replace(/"/g, '')
         
-        const response = await fetch('http://localhost:8080/tasks/showTasks', {
+        const response = await fetch(`${URL_BE}/tasks/showTasks`, {
           method: 'GET',
           headers: {
             Authorization: `Bearer ${token}`,
@@ -40,7 +42,7 @@ const Eventscalendar = () => {
 
   const showProjects = async () =>{
     try {
-      const response = await fetch('http://localhost:8080/project/getProjects', {
+      const response = await fetch(`${URL_BE}/project/getProjects`, {
         method: 'GET',
     });
 

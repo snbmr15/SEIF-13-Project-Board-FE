@@ -3,6 +3,7 @@ import { useNavigate, NavLink } from 'react-router-dom'
 import "../stylesheets/todoForm.css"
 import {Container, Form, Button, Row, Col, Modal, ListGroup } from 'react-bootstrap';
 import { UserContext } from '../App';
+import URL_BE from "../config";
 
 
 const TodoForm = ({clickedTask}) => {
@@ -29,7 +30,7 @@ const TodoForm = ({clickedTask}) => {
     const showCategories = async () => {
         try {
             const token = (localStorage.getItem('User')).replace(/"/g, '')
-            const response = await fetch('http://localhost:8080/taskCat/getAllTaskCategories', {
+            const response = await fetch(`${URL_BE}/taskCat/getAllTaskCategories`, {
                 method: 'GET',
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -63,7 +64,7 @@ const TodoForm = ({clickedTask}) => {
 
         const token = (localStorage.getItem('User')).replace(/"/g, '')
         
-        const response = await fetch('http://localhost:8080/tasks/addNewTask', {
+        const response = await fetch(`${URL_BE}/tasks/addNewTask`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -108,7 +109,7 @@ const TodoForm = ({clickedTask}) => {
         };
         
         const token = (localStorage.getItem('User')).replace(/"/g, '')
-        const response = await fetch('http://localhost:8080/tasks/updatingTask', {
+        const response = await fetch(`${URL_BE}/tasks/updatingTask`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -153,7 +154,7 @@ const TodoForm = ({clickedTask}) => {
         }
         
         const token = (localStorage.getItem('User')).replace(/"/g, '')
-        const response = await fetch('http://localhost:8080/taskCat/createTaskCategory', {
+        const response = await fetch(`${URL_BE}/taskCat/createTaskCategory`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -188,7 +189,7 @@ const TodoForm = ({clickedTask}) => {
         
         try {
             const token = (localStorage.getItem('User')).replace(/"/g, '');
-            const response = await fetch(`http://localhost:8080/taskCat/deleteTaskCategory/${catName}`, {
+            const response = await fetch(`${URL_BE}/taskCat/deleteTaskCategory/${catName}`, {
                 method: 'DELETE',
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -211,7 +212,7 @@ const TodoForm = ({clickedTask}) => {
         let taskName = e.target.id;
         try {
             const token = (localStorage.getItem('User')).replace(/"/g, '')
-            const response = await fetch(`http://localhost:8080/tasks/deletingSelectedTask/${taskName}`, {
+            const response = await fetch(`${URL_BE}/tasks/deletingSelectedTask/${taskName}`, {
                 method: 'DELETE',
                 headers: {
                     Authorization: `Bearer ${token}`,

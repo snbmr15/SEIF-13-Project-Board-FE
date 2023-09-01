@@ -4,7 +4,8 @@ import { Row, Col,Container, ListGroup, Badge } from 'react-bootstrap';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import '../stylesheets/todos.css'
 import TodoForm from './TodoForm';
-import { UserContext } from '../App'
+import { UserContext } from '../App';
+import URL_BE from "../config";
 
 const SideNavbar = () => {
 
@@ -25,7 +26,7 @@ const SideNavbar = () => {
         const token = (localStorage.getItem('User')).replace(/"/g, '') // Fetch the token from local storage
         console.log(token);
         
-        const response = await fetch('http://localhost:8080/tasks/showTasks', {
+        const response = await fetch(`${URL_BE}/tasks/showTasks`, {
           method: 'GET',
           headers: {
             Authorization: `Bearer ${token}`, // Include the token in the Authorization header
