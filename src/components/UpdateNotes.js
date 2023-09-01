@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import '../stylesheets/notes.css'
 import { Container, Form, Button, ListGroup, Modal } from 'react-bootstrap';
+import URL_BE from "../config"
 
 
 const UpdateNotes = ({ noteData }) => {
@@ -31,7 +32,7 @@ const UpdateNotes = ({ noteData }) => {
 
     try {
       const token = localStorage.getItem('User').replace(/"/g, '');
-      const response = await fetch('http://localhost:8080/notes/updateNote', {
+      const response = await fetch(`${URL_BE}/notes/updateNote`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

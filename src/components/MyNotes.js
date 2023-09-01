@@ -4,6 +4,7 @@ import { Row, Col, Container, ListGroup, Modal } from 'react-bootstrap';
 import CreateNotes from './CreateNotes';
 import UpdateNotes from './UpdateNotes';
 import DeleteNote from './DeleteNote';
+import URL_BE from "../config";
 
 
 const MyNotes = () => {
@@ -17,6 +18,7 @@ const MyNotes = () => {
     const [currentNote, setCurrentNote] = useState();
     const handleHideSelectionModal = () =>{setCurrentNote(""); setSmShow(false);}
     const [fecthTasks, setFecthTasks] = useState();
+    
 
 
 
@@ -25,7 +27,7 @@ const MyNotes = () => {
       const token = (localStorage.getItem('User')).replace(/"/g, '') // Fetch the token from local storage
       console.log(token);
 
-      const response = await fetch('http://localhost:8080/notes/getNotes', {
+      const response = await fetch(`${URL_BE}/notes/getNotes`, {
         method: 'GET',
         headers: {
           Authorization: `Bearer ${token}`, // Include the token in the Authorization header
@@ -72,7 +74,7 @@ const MyNotes = () => {
                     <br></br>
                   </Col>
                   <Col sm lg="6">
-                    <Container ><CreateNotes setFecthTasks={{setFecthTasks}}/></Container>
+                    <Container ><CreateNotes setFecthTasks={setFecthTasks}/></Container>
                     <br></br>
                   </Col>
                 </Row>

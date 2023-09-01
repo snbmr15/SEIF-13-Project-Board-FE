@@ -1,6 +1,7 @@
 import React, {useState, useLayoutEffect, useEffect} from 'react'
 import '../stylesheets/notes.css'
 import { Button, ListGroup, Modal } from 'react-bootstrap';
+import URL_BE from "../config"
 
 
 
@@ -30,7 +31,7 @@ const DeleteNote = ({noteData}) => {
         if(alertTitle && noteId){
             try {
                 const token = (localStorage.getItem('User')).replace(/"/g, '')
-                const response = await fetch('http://localhost:8080/notes/deleteNote', {
+                const response = await fetch(`${URL_BE}/notes/deleteNote`, {
                     method: 'DELETE',
                     headers: {
                         'Content-Type' : 'application/json',
