@@ -1,10 +1,10 @@
 import React, {useState } from 'react'
 import '../stylesheets/notes.css'
 import { Container, Form, Button, ListGroup, Modal } from 'react-bootstrap';
-import URL_BE from "../config"
+import URL_BE from "../config";
 
 
-const CreateNotes = ({props}) => {
+const CreateNotes = (props) => {
 
     const [showAlert, setShowAlert] = useState(false);
     const handleAlertClose = () =>{setShowAlert(false);}
