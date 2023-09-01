@@ -23,7 +23,6 @@ const Home = () => {
         :
         <Container className='background2 ' fluid>
           <Signup/>
-          {/* <h1>For creating / managing teams please<NavLink to="/login" >Login</NavLink></h1> */}
         </Container>
         }
     </>

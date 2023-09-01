@@ -18,12 +18,17 @@ const Eventscalendar = () => {
 
     const showTasks = async () =>{
         try {
-          const response = await fetch('http://localhost:8080/showTasks', {
-            method: 'GET',
+        const token = (localStorage.getItem('User')).replace(/"/g, '')
+        
+        const response = await fetch('http://localhost:8080/tasks/showTasks', {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         });
-  
+    
         const data = await response.json();
-        // console.log(data)
+        console.log(data);
         setTasks(data);
 
         } catch (error) {
@@ -35,7 +40,7 @@ const Eventscalendar = () => {
 
   const showProjects = async () =>{
     try {
-      const response = await fetch('http://localhost:8080/getProjects', {
+      const response = await fetch('http://localhost:8080/project/getProjects', {
         method: 'GET',
     });
 
@@ -99,10 +104,6 @@ const Eventscalendar = () => {
         <FullCalendar
         plugins={[ dayGridPlugin, timeGridPlugin ]}
         initialView="dayGridMonth"
-        // events={[
-        //     { title: 'event 1', date: '2022-10-13' },
-        //     { title: 'event 2', date: '2022-10-13' }
-        //   ]}
         events={allEvents}
         />
         

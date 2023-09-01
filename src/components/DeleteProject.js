@@ -18,7 +18,7 @@ const DeleteProject = ({projectData}) => {
         let selectedId = e.target.id;
         
         try {
-            const response = await fetch('http://localhost:8080/deleteProject', { 
+            const response = await fetch('http://localhost:8080/project/deleteProject', { 
                 method: 'POST',
                 headers: {
                     'Content-Type' : 'application/json' 

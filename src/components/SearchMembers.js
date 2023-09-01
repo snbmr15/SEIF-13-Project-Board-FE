@@ -21,7 +21,7 @@ const SearchMembers = ({props}) => {
     
     const getFriends = async () =>{
         try {
-            const response = await fetch('http://localhost:8080/getFriendRequests', {
+            const response = await fetch('http://localhost:8080/friends/getFriendRequests', {
                 method: 'GET',
             })
 
@@ -50,7 +50,7 @@ const SearchMembers = ({props}) => {
         if(e.keyCode === 13 && searchInput){
 
             try {
-                const response = await fetch('http://localhost:8080/searchUsers', {
+                const response = await fetch('http://localhost:8080/search/searchUsers', {
                     method: 'POST',
                     headers: {
                         'Content-Type' : 'application/json' 
@@ -79,7 +79,7 @@ const SearchMembers = ({props}) => {
     const handleSearchBtn = async () =>{
         
         try {
-            const response = await fetch('http://localhost:8080/searchUsers', {
+            const response = await fetch('http://localhost:8080/search/searchUsers', {
                 method: 'POST',
                 headers: {
                     'Content-Type' : 'application/json' 
@@ -129,7 +129,7 @@ const SearchMembers = ({props}) => {
         let personId = e.target.id;        
        
         try {
-            const response = await fetch('http://localhost:8080/sendFriendRequest', {
+            const response = await fetch('http://localhost:8080/friends/sendFriendRequest', {
                 method: 'POST',
                 headers: {
                     'Content-Type' : 'application/json' 

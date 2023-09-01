@@ -18,7 +18,7 @@ const ProjectNotification = ({projectData}) => {
         if(projectData){
             let selectedProjectId = projectData._id;
             try {
-                const response = await fetch('http://localhost:8080/getProjectNotifications', {
+                const response = await fetch('http://localhost:8080/project/getProjectNotifications', {
                     method: 'POST',
                     headers: {
                         'Content-Type' : 'application/json' 
@@ -44,7 +44,7 @@ const ProjectNotification = ({projectData}) => {
         if(projectData){
             let selectedProjectId = projectData._id;
             try {
-                const response = await fetch('http://localhost:8080/deleteProjectNotifications', {
+                const response = await fetch('http://localhost:8080/project/deleteProjectNotifications', {
                     method: 'POST',
                     headers: {
                         'Content-Type' : 'application/json' 

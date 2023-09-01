@@ -1,16 +1,21 @@
-import React, {useState, useEffect, useRef} from 'react'
+import React, {useState, useEffect, useContext } from 'react'
 import { useNavigate, NavLink } from 'react-router-dom'
 import "../stylesheets/todoForm.css"
-import {Container, Form, Button, Row, Col, Badge, Modal, ListGroup } from 'react-bootstrap';
+import {Container, Form, Button, Row, Col, Modal, ListGroup } from 'react-bootstrap';
+import { UserContext } from '../App';
+
 
 const TodoForm = ({clickedTask}) => {
     
+    const navigate = useNavigate();
     const [showAlert, setShowAlert] = useState(false);
     const handleAlertClose = () =>{setShowAlert(false);}
     const [alertMessage, setAlertMessage] = useState("");
     const [alertTitle, setAlertTitle] = useState("");
     const [smShow, setSmShow] = useState(false);
     const [taskCat, setTaskCat] = useState([]);
+    const [tasks, setTasks] = useState([]);
+
     const [taskForUpdate, setTaskForUpdate] = useState();
     const [defaultCat, setDefaultCat] = useState([
         {category: 'Default'},
@@ -18,30 +23,29 @@ const TodoForm = ({clickedTask}) => {
         {category: 'Important'}
     ]);
     // let markTask = clickedTask.taskUpdate;
-  
 
-    const showCategories = async () =>{
+    // const { state } = useContext(UserContext);
+
+    const showCategories = async () => {
         try {
-            const response = await fetch('http://localhost:8080/getAllTaskCategories', {
+            const token = (localStorage.getItem('User')).replace(/"/g, '')
+            const response = await fetch('http://localhost:8080/taskCat/getAllTaskCategories', {
                 method: 'GET',
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
             });
-    
+
             const data = await response.json();
             setTaskCat(data);
-            
         } catch (error) {
-            console.log(error)
+            console.log(error);
         }
-        
-    }
-
+    };
 
     useEffect(() =>{
         showCategories();
     },[])
-
-
-    
 
     const handleSubmit = async (e) =>{
         e.preventDefault();
@@ -51,16 +55,22 @@ const TodoForm = ({clickedTask}) => {
         let details = {
             task: task.value,
             date: date.value,
-            category: category.value
+            category: category.value,
+            taskStatus: "Pending"
         }
 
-        const response = await fetch('http://localhost:8080/addNewTask', {
+        console.log(details); // Add this line to log the details
+
+        const token = (localStorage.getItem('User')).replace(/"/g, '')
+        
+        const response = await fetch('http://localhost:8080/tasks/addNewTask', {
             method: 'POST',
             headers: {
-                'Content-Type' : 'application/json'
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`, // Include the token in the headers
             },
             body: JSON.stringify(details),
-        })
+          });
 
         let data = await response.json();
 
@@ -84,22 +94,28 @@ const TodoForm = ({clickedTask}) => {
     const handleUpdate = async (e) => {
         e.preventDefault();
         const form = e.currentTarget;
-        const {updateTask, updateDate, updateCategory } = e.target.elements;
 
-        let details = {
-            task: updateTask.value,
-            date: updateDate.value,
-            category: updateCategory.value,
-            id: taskForUpdate._id
-        }
+        const formData = new FormData(form);
 
-        const response = await fetch('http://localhost:8080/updatingTask', {
+        const currentTaskData = taskForUpdate;
+
+        const details = {
+          task: formData.get('task') || currentTaskData.task, // Make sure this matches the name attribute
+          date: formData.get('date'), // Make sure this matches the name attribute
+          category: formData.get('category') || currentTaskData.category, // Make sure this matches the name attribute
+          taskStatus: currentTaskData.taskStatus || formData.get('updateStatus'), // Keep the current taskStatus
+          id: currentTaskData._id, // Use the current task's ID
+        };
+        
+        const token = (localStorage.getItem('User')).replace(/"/g, '')
+        const response = await fetch('http://localhost:8080/tasks/updatingTask', {
             method: 'POST',
             headers: {
-                'Content-Type' : 'application/json'
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`, // Include the token in the headers
             },
             body: JSON.stringify(details),
-        })
+          });
 
         let data = await response.json();
 
@@ -109,12 +125,13 @@ const TodoForm = ({clickedTask}) => {
             setShowAlert(true);
             
         }
-        else{
+        else {
             setAlertTitle("Alert")
             setAlertMessage("Task updated successfully.");
             setShowAlert(true);
             clickedTask.setFecthTasks(data);
             setTaskForUpdate(null);
+            
         }
         form.reset();
     }
@@ -135,14 +152,15 @@ const TodoForm = ({clickedTask}) => {
             name: categoryInput.value
         }
         
-    
-        const response = await fetch('http://localhost:8080//createTaskCategory', { 
+        const token = (localStorage.getItem('User')).replace(/"/g, '')
+        const response = await fetch('http://localhost:8080/taskCat/createTaskCategory', {
             method: 'POST',
             headers: {
-                'Content-Type' : 'application/json' 
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`, // Include the token in the headers
             },
             body: JSON.stringify(newcategory),
-        })
+          });
         
         let data = await response.json();
 
@@ -151,51 +169,54 @@ const TodoForm = ({clickedTask}) => {
             setAlertMessage("Something went wrong.");
             setShowAlert(true);
         }
-        else{
+        else {
             setAlertTitle("Alert")
             setAlertMessage("Category added successfully.");
             setShowAlert(true);
             // window.location.reload(false);
+
+            // Update the taskCat state with the new category
+            setTaskCat((prevTaskCat) => [...prevTaskCat, data]);
         }
         categoryInput.value = "";
     }
 
 
-    const deleteCat = async (e) =>{
-        let catId = e.target.id
-        console.log(catId)
+    const deleteCat = async (e) => {
+        let catName = e.target.id;
+        console.log(catName);
         
         try {
-            const response = await fetch('http://localhost:8080/deletingTaskCategory', {
-                method: 'POST',
+            const token = (localStorage.getItem('User')).replace(/"/g, '');
+            const response = await fetch(`http://localhost:8080/taskCat/deleteTaskCategory/${catName}`, {
+                method: 'DELETE',
                 headers: {
-                    'Content-Type' : 'application/json'
+                    Authorization: `Bearer ${token}`,
                 },
-                body: JSON.stringify({catId}),
-            })
+            });
     
-            let data = await response.json();
-
-            setTaskCat(data);
-    
+            if (response.status === 200) {
+                const newData = await response.json();
+                setTaskCat(newData);
+            } else {
+                console.log('Error deleting category');
+            }
         } catch (error) {
-            console.log(error)
+            console.log(error);
         }
-        
-        
-    }
-
-
-
+    };
+    
+    
     const handleDeleteTask = async (e) =>{
-        let taskId = e.target.id;
+        let taskName = e.target.id;
         try {
-            const response = await fetch('http://localhost:8080/deletingSelectedTask', {
-                method: 'POST',
+            const token = (localStorage.getItem('User')).replace(/"/g, '')
+            const response = await fetch(`http://localhost:8080/tasks/deletingSelectedTask/${taskName}`, {
+                method: 'DELETE',
                 headers: {
-                    'Content-Type' : 'application/json'
+                    Authorization: `Bearer ${token}`,
                 },
-                body: JSON.stringify({taskId}),
+                // body: JSON.stringify({taskName}),
             })
     
             let data = await response.json();
@@ -210,7 +231,6 @@ const TodoForm = ({clickedTask}) => {
         } catch (error) {
             console.log(error)
         }
-
     }
 
 
@@ -247,16 +267,18 @@ const TodoForm = ({clickedTask}) => {
                     </Col>
                 </Row>
                 <Row>
-                    <Col>
-                        <ListGroup variant="flush" >
-                            <ListGroup.Item className='todosList'>Default</ListGroup.Item>
-                            <ListGroup.Item className='todosList'>Personal</ListGroup.Item>
-                            <ListGroup.Item className='todosList'>Important</ListGroup.Item>
-                            {taskCat.map( (taskCat, index) =>
-                                <ListGroup.Item className='todosList' key={index}>{taskCat.category} <i className="fa fa-trash trashBtn" id={taskCat._id} onClick={deleteCat}></i> </ListGroup.Item>
-                            )}
-                        </ListGroup>
-                    </Col>
+                              <Col>
+                                  <ListGroup variant="flush" >
+                                      <ListGroup.Item className='todosList'>Default</ListGroup.Item>
+                                      <ListGroup.Item className='todosList'>Personal</ListGroup.Item>
+                                      <ListGroup.Item className='todosList'>Important</ListGroup.Item>
+                                      {taskCat.map((taskCat, index) =>
+                                          <ListGroup.Item className='todosList' key={index}>
+                                              {taskCat.category} <i className="fa fa-trash trashBtn" id={taskCat._id} onClick={deleteCat}></i>
+                                          </ListGroup.Item>
+                                      )}
+                                  </ListGroup>
+                              </Col>
                 </Row>
                 </Container>
             </Modal.Body>
@@ -310,13 +332,13 @@ const TodoForm = ({clickedTask}) => {
                                     <i className="fa fa-check"></i> 
                                 </Button>
                             </Form.Group>
-                            {/* <Form.Group className="mb-3" >
+                            <Form.Group className="mb-3" >
                                 <Form.Label className='formTxt'>Status</Form.Label>
-                                <Form.Select id='updateStatus' className='formInput' aria-label="Default select example"> 
-                                    <option className='listOption'>Pending</option>                
-                                    <option className='listOption'>Completed</option>                
+                                <Form.Select name="updateStatus" id='updateStatus' className='formInput' aria-label="Default select example"> 
+                                    <option value="Pending" className='listOption'>Pending</option>
+                                    <option value="Completed" className='listOption'>Completed</option>                
                                 </Form.Select>
-                            </Form.Group> */}
+                            </Form.Group>
                         </Col>
                         <Col>
                             <Form.Group className="mb-3" >

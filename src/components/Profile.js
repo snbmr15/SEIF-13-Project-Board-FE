@@ -14,13 +14,19 @@ const Profile = () => {
     const handleSignOut = async () =>{
 
         try{
-            const response = await fetch("http://localhost:8080/userSignOut", {
+            const response = await fetch("http://localhost:8080/users/userSignOut", {
                 method: "GET",
             });
             let data = await response.json();
 
-            if(response.status === 201 && data){
-                localStorage.removeItem("User")      
+            if(response.status === 201 || 200 && data){
+                localStorage.removeItem("User")
+                dispatch(
+                    {
+                        type: "USER",
+                        payload: null
+                    }
+                )      
                 navigate("/login");
             }
         } catch(error){
@@ -39,33 +45,13 @@ const Profile = () => {
 
         <Modal size="sm" show={showAlert} onHide={()=>setShowAlert(false)} aria-labelledby="example-modal-sizes-title-sm">
             <Modal.Header closeButton className='modalHeader'>
-                <Modal.Title id="example-modal-sizes-title-sm">Profile</Modal.Title>
+                <Modal.Title id="example-modal-sizes-title-sm">Sign Out?</Modal.Title>
             </Modal.Header>
             <Modal.Body className='modalBodyStatic'>
-                {state ?
-                    <Container className='profileCont'>
-                        <Row className="justify-content-md-center">
-                            <Col>
-                                <img 
-                                    src={state.image}
-                                    onError={(e)=>{e.target.onError = null; e.target.src = image_S1}}
-                                    className="profileImages"
-                                />
-                            </Col>
-                        </Row>
-                        <Row>
-                            <p>{state.name}</p>
-                        </Row>
-                        <Row>
-                            <p>{state.email}</p>
-                        </Row>
-                    </Container>
-                :
-                    <Container></Container>
-                }                
+                <Button className='saveBtn' onClick={handleSignOut}>SignOut</Button>      
             </Modal.Body>
             <Modal.Footer className='modalFooter'>
-                <Button className='saveBtn' onClick={handleSignOut}>SignOut</Button> 
+                
             </Modal.Footer>
         </Modal>
     

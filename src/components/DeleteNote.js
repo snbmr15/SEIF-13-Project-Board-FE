@@ -29,10 +29,12 @@ const DeleteNote = ({noteData}) => {
 
         if(alertTitle && noteId){
             try {
-                const response = await fetch('http://localhost:8080/deleteNote', {
-                    method: 'POST',
+                const token = (localStorage.getItem('User')).replace(/"/g, '')
+                const response = await fetch('http://localhost:8080/notes/deleteNote', {
+                    method: 'DELETE',
                     headers: {
-                        'Content-Type' : 'application/json' 
+                        'Content-Type' : 'application/json',
+                        Authorization: `Bearer ${token}` 
                     },
                     body: JSON.stringify({noteId}),
                 })

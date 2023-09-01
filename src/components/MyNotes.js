@@ -20,19 +20,25 @@ const MyNotes = () => {
 
 
 
-    const getNotes = async () =>{
-      try {
-          const response = await fetch('http://localhost:8080/getNotes', {
-              method: 'GET',
-          })
+  const getNotes = async () => {
+    try {
+      const token = (localStorage.getItem('User')).replace(/"/g, '') // Fetch the token from local storage
+      console.log(token);
 
-          const data = await response.json();
-          console.log(data)
-          setMyNotes(data);
+      const response = await fetch('http://localhost:8080/notes/getNotes', {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`, // Include the token in the Authorization header
+        },
+      })
 
-      } catch (error) {
-          console.log(error)
-      }
+      const data = await response.json();
+      console.log(data)
+      setMyNotes(data);
+
+    } catch (error) {
+      console.log(error)
+    }
 
   }
 
@@ -66,7 +72,7 @@ const MyNotes = () => {
                     <br></br>
                   </Col>
                   <Col sm lg="6">
-                    <Container ><CreateNotes props={{setFecthTasks}}/></Container>
+                    <Container ><CreateNotes setFecthTasks={{setFecthTasks}}/></Container>
                     <br></br>
                   </Col>
                 </Row>
@@ -97,7 +103,7 @@ const MyNotes = () => {
 
 
 
-        <Modal size="sm" show={smShow} onHide={handleHideSelectionModal} aria-labelledby="example-modal-sizes-title-sm" >
+        <Modal size="sm" show={smShow} onHide={() => setSmShow(false)} aria-labelledby="example-modal-sizes-title-sm" >
             <Modal.Header closeButton className='modalHeader'>
                 <Modal.Title id="example-modal-sizes-title-sm" className='titleSelection'>
                     Choose For Selected Note

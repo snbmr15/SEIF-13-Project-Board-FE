@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useContext, useRef } from 'react';
-import { useNavigate, NavLink } from 'react-router-dom'
+import React, { useState, useEffect, useContext } from 'react';
+import { useNavigate } from 'react-router-dom'
 import { Row, Col,Container, ListGroup, Badge } from 'react-bootstrap';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import '../stylesheets/todos.css'
@@ -8,6 +8,7 @@ import { UserContext } from '../App'
 
 const SideNavbar = () => {
 
+    const navigate = useNavigate();
     const {state, dispatch} = useContext(UserContext);  
     const [fecthTasks, setFecthTasks] = useState();
     const [tasks, setTasks] = useState([]);
@@ -19,23 +20,26 @@ const SideNavbar = () => {
     }
     const handleShow = () => setShow(true);
     
-
-
-    
-    const showTasks = async () =>{
-        try {
-          const response = await fetch('http://localhost:8080/showTasks', { 
-            method: 'GET', 
+    const showTasks = async () => {
+      try {
+        const token = (localStorage.getItem('User')).replace(/"/g, '') // Fetch the token from local storage
+        console.log(token);
+        
+        const response = await fetch('http://localhost:8080/tasks/showTasks', {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${token}`, // Include the token in the Authorization header
+          },
         });
-  
+    
         const data = await response.json();
-        console.log(data) 
+        console.log(data);
         setTasks(data);
-        } catch (error) {
-          console.log(error)
-        }
-      
-    }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    
 
   useEffect(() =>{
       showTasks();
@@ -61,9 +65,9 @@ const SideNavbar = () => {
     findTask.date = fullDate;
 
     setTaskUpdate(findTask)
-      // taskUpdate = findTask;
+    // taskUpdate = findTask;
     // taskUpdate.current = findTask;
-    // navigate("/updateForm", {state : {findTask}})
+    // navigate("/updateForm", { state: { findTask } })
     
   }
 

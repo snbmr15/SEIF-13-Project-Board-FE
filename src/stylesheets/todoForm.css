@@ -120,3 +120,8 @@
   background-color: #dad9d7 !important;
   color: black;
 }
+
+.completed-task {
+  background-color: #d3f3d3; /* Set your desired background color for completed tasks */
+  text-decoration: line-through; /* Add other styles as needed */
+}

@@ -29,7 +29,7 @@ const ViewProject = ({projectData}) => {
                 let selectedProjectId = projectData._id;
                 let selectedProjectCreator = projectData.projectCreator;
 
-                const response = await fetch('http://localhost:8080/showProjectPhases', {
+                const response = await fetch('http://localhost:8080/project/showProjectPhases', {
                     method: 'POST',
                     headers: {
                         'Content-Type' : 'application/json' 
@@ -95,7 +95,7 @@ const ViewProject = ({projectData}) => {
     const handleCompletedPhases = async (e) =>{
         let selectedProjectId = e.target.id;
         try {
-            const response = await fetch('http://localhost:8080/phaseCompletedNotification', {
+            const response = await fetch('http://localhost:8080/project/phaseCompletedNotification', {
                 method: 'POST',
                 headers: {
                     'Content-Type' : 'application/json' 

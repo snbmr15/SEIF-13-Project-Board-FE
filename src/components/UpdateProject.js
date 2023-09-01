@@ -49,7 +49,7 @@ const UpdateProject = ({projectData}) => {
 
     const getFriends = async () =>{
         try {
-            const response = await fetch('http://localhost:8080/getFriendRequests', {
+            const response = await fetch('http://localhost:8080/friends/getFriendRequests', {
                 method: 'GET',
             })
 
@@ -242,7 +242,7 @@ const UpdateProject = ({projectData}) => {
 
         if(updateProjectPhases.length > 0){
             try {
-                const response = await fetch("http://localhost:8080/updatingProject", {
+                const response = await fetch("http://localhost:8080/project/updatingProject", {
                     method: "POST",
                     body: formData
                       

@@ -7,7 +7,6 @@ import DeleteProject from './DeleteProject';
 import Projects from './Projects';
 import AssignPhases from './AssignPhases';
 import ProjectNotification from './ProjectNotification';
-import ProjectChat from './ProjectChat';
 
 
 const DisplayProjects = (props) => {
@@ -42,7 +41,7 @@ const DisplayProjects = (props) => {
 
     const getFriends = async () =>{
         try {
-            const response = await fetch('http://localhost:8080/getFriendRequests', {
+            const response = await fetch('http://localhost:8080/friends/getFriendRequests', {
                 method: 'GET',
             })
 
@@ -59,7 +58,7 @@ const DisplayProjects = (props) => {
 
     const showAssignedProjects = async () =>{
         try {
-          const response = await fetch('http://localhost:8080/getAssignedProjects', {
+          const response = await fetch('http://localhost:8080/project/getAssignedProjects', {
             method: 'GET',
         });
     
@@ -77,7 +76,7 @@ const DisplayProjects = (props) => {
 
     const showProjects = async () =>{
         try {
-          const response = await fetch('http://localhost:8080/getProjects', {
+          const response = await fetch('http://localhost:8080/project/getProjects', {
             method: 'GET',
         });
     
@@ -222,10 +221,6 @@ const DisplayProjects = (props) => {
 
                 <ProjectNotification projectData={currentProject}/>
                         
-                <br></br>
-
-                <ProjectChat projectData={currentProject}/>
-
                 <br></br>
                 
                 <DeleteProject projectData={{currentProject, setFecthTasks}} />

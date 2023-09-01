@@ -1,23 +1,20 @@
 import React, {useState, useContext, useEffect, useRef  } from 'react'
 import {useNavigate} from "react-router-dom";
-// import { GoogleLogin } from "react-google-login";
 import '../stylesheets/login.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Row, Container, Form, Button, Modal } from 'react-bootstrap';
-
 import { UserContext } from '../App';
-import WatchVideo from './WatchVideo';
 
 const Signup = () => {
 
     const {state, dispatch} = useContext(UserContext);
+    const { loginSuccess } = useContext(UserContext);
     const navigate = useNavigate();
     const [alertMessage, setAlertMessage] = useState("");
     const [alertTitle, setAlertTitle] = useState("");
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [userPassword, setUserPassword] = useState("");
-    // const [userImage, setUserImage] = useState();
 
     const [showModal, setShowModal] = useState(false);
     const handleClose = () => setShowModal(false);
@@ -28,98 +25,84 @@ const Signup = () => {
     const [showAlert, setShowAlert] = useState(false);
     const handleAlertClose = () =>{setShowAlert(false);}
 
-
-
-    const handleSinginSubmit = async (e) =>{
+    const handleSinginSubmit = async (e) => {
         e.preventDefault();
 
-        if(email && userPassword){
+        if (email && userPassword) {
             try {
-                const response = await fetch('http://localhost:8080/signInUser', {
+                const response = await fetch('http://localhost:8080/users/signInUser', {
                     method: 'POST',
                     headers: {
-                        'Content-Type' : 'application/json' 
+                        'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({email, userPassword}),
+                    body: JSON.stringify({ email, userPassword }),
                 });
-    
-                const data = await response.json();
 
-                if(response.status === 201 && data){
-                    console.log(data)
-                    dispatch({type: "USER", payload: data});
-                    navigate("/")
+                const data = await response.json();
+                // console.log(response);
+
+                // console.log(data);
+
+                if (response.status === 201 || 200 && data) {
+                    // console.log(data);
+                    const token = data.token;
+                    // Assuming you have a similar dispatch function
+                    dispatch({ type: "USER", payload: token });
+                    loginSuccess(data.token);
+                    navigate('/');
                     window.location.reload();
-                }
-                else{
-                    setAlertTitle("Alert")
+                } else {
+                    setAlertTitle("Alert");
                     setAlertMessage(data.message);
                     setShowAlert(true);
                 }
-                
             } catch (error) {
                 console.log(error);
             }
-        }
-        else{
-            setAlertTitle("Alert")
+        } else {
+            setAlertTitle("Alert");
             setAlertMessage("Please fill the form correctly");
             setShowAlert(true);
         }
     }
 
-
-    const handleSingupSubmit = async (e) =>{
+    const handleSingupSubmit = async (e) => {
         e.preventDefault();
-        const form = e.currentTarget;
 
         let nameRegEx = /^[A-Za-z\s]*$/.test(name);
         let checkName = name.length > 0 && name.length < 15;
         let emailRegEx = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email);
         let checkPass = userPassword.length > 7;
-        // let checkCnfrmPass = userCnfrmPass.length > 7;
-        // let checkBothPass = userPassword === userCnfrmPass;
 
-        if(checkName && nameRegEx && emailRegEx && checkPass){
-            
-            let formData = new FormData();
-            
-            formData.append('userName', name);
-            formData.append('userEmail', email);
-            formData.append('userPassword', userPassword);
-            console.log(formData);
-
+        if (checkName && nameRegEx && emailRegEx && checkPass) {
             try {
-                const response = await fetch("http://localhost:8080/createNewUser", {
+                const response = await fetch("http://localhost:8080/users/createNewUser", {
                     method: "POST",
-                    body: formData
+                    headers: {
+                        'Content-Type': 'application/json' // Set Content-Type header
+                    },
+                    body: JSON.stringify({ name, email, userPassword }), // Send data as JSON
                 });
-                console.log(response);
+
                 const data = await response.json();
 
-                if(response.status === 201 && data){
-                    setAlertTitle("Alert")
+                if (response.status === 201 && data) {
+                    setAlertTitle("Alert");
                     setAlertMessage(data.message);
                     setShowAlert(true);
 
                     setName("");
                     setEmail("");
                     setUserPassword("");
-                    form.reset();
                     setShowModal(false);
                 }
-
             } catch (error) {
                 console.log(error);
             }
-
-        }
-        else{
+        } else {
             setShowAlertForm(true);
         }
-
     }
-
 
 
 
@@ -134,25 +117,31 @@ const Signup = () => {
                     </Row>
                     <Row>
                         <Container className='signinFormCont'>
-                            <Form method='POST' onSubmit={handleSinginSubmit}>
-                                <Form.Group className="mb-3">
-                                    <Form.Label>Email address</Form.Label>
-                                    <Form.Control type="email" className='formInput' value={email} onChange={(e)=>setEmail(e.target.value)} placeholder="Enter email" />
-                                    <Form.Text className="text-muted">
-                                        We'll never share your email with anyone else.
-                                    </Form.Text>
-                                </Form.Group>
-                                <Form.Group className="mb-3">
-                                    <Form.Label>Password</Form.Label>
-                                    <Form.Control type="password" className='formInput' value={userPassword} onChange={(e)=>setUserPassword(e.target.value)} placeholder="Password" />
-                                </Form.Group>
-                                <br></br>
-                                <Form.Group className="mb-3" >
-                                    <Button className='formSignInBtn' variant="primary" type="submit" >
-                                        Signin
-                                    </Button>
-                            </Form.Group> 
-                            </Form>
+                            <form onSubmit={handleSinginSubmit}>
+                                <div className="mb-3">
+                                    <label htmlFor="email" className="form-label">Email</label>
+                                    <input
+                                        type="email"
+                                        className="form-control"
+                                        id="email"
+                                        name="email"
+                                        value={email}
+                                        onChange={(e) => setEmail(e.target.value)}
+                                    />
+                                </div>
+                                <div className="mb-3">
+                                    <label htmlFor="password" className="form-label">Password</label>
+                                    <input
+                                        type="password"
+                                        className="form-control"
+                                        id="password"
+                                        name="password"
+                                        value={userPassword}
+                                        onChange={(e) => setUserPassword(e.target.value)}
+                                    />
+                                </div>
+                                <button type="submit" className="btn btn-primary">Sign in</button>
+                            </form>
                         </Container>
                     </Row>
                     <br></br>
@@ -162,17 +151,7 @@ const Signup = () => {
                         </Container>
                     </Row>
                     <br></br>
-                    <Row>
-                        <Container className='headingCont'>
-                            <p className='accountTxt'>See how it works <WatchVideo/></p>
-                        </Container>
-                    </Row>
                 </Container>
-
-
-
-
-
 
 
                 {/* Signup Modal */}

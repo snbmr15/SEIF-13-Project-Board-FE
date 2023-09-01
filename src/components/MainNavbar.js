@@ -6,7 +6,7 @@ import DisplayProjects from './DisplayProjects';
 import Eventscalendar from './Eventscalendar';
 import MyNotes from './MyNotes';
 import Profile from './Profile';
-import Notifications from './Notifications';
+// import Notifications from './Notifications';
 
 const MainNavbar = () => {
 
@@ -19,11 +19,14 @@ const MainNavbar = () => {
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto navItems">
               <Nav.Link href="#todos" className='navLinks'><Todos/></Nav.Link>
-              <Nav.Link href="#todos" className='navLinks'><MyNotes/></Nav.Link>
-              <Nav.Link href="#projects" className='navLinks'><DisplayProjects/></Nav.Link>
+              <Nav.Link href="#notes" className='navLinks'><MyNotes/></Nav.Link>
               <Nav.Link href="#calendar" className='navLinks'><Eventscalendar/></Nav.Link>
+              <Nav.Link href="#searchMembers" className='navLinks'><Profile/></Nav.Link>
+              
+              {/*
+              <Nav.Link href="#projects" className='navLinks'><DisplayProjects/></Nav.Link>
               <Nav.Link href="#searchMembers" className='navLinks'><Notifications/></Nav.Link>         
-              <Nav.Link href="#searchMembers" className='navLinks'><Profile/></Nav.Link>         
+              */}         
             </Nav>
           </Navbar.Collapse>
         </Container>

@@ -21,7 +21,7 @@ const Notifications = () => {
 
     const requestSentBYMe = async () =>{
       try {
-          const response = await fetch('http://localhost:8080/requestsByMe', { 
+          const response = await fetch('http://localhost:8080/friends/requestsByMe', { 
               method: 'GET',
           })
 
@@ -38,7 +38,7 @@ const Notifications = () => {
 
     const getRequest = async () =>{
         try {
-            const response = await fetch('http://localhost:8080/getFriendRequests', { 
+            const response = await fetch('http://localhost:8080/friends/getFriendRequests', { 
                 method: 'GET',
             })
 
@@ -61,7 +61,7 @@ const Notifications = () => {
     const handleAcceptBtn = async (e) =>{
         let personId = e.target.id;
         try {
-          const response = await fetch('http://localhost:8080/acceptFriendRequest', {
+          const response = await fetch('http://localhost:8080/friends/acceptFriendRequest', {
             method: 'POST',
             headers: {
                 'Content-Type' : 'application/json' 
@@ -90,7 +90,7 @@ const Notifications = () => {
     const handleCancelRequest = async (e) =>{
       let personId = e.target.id;
       try {
-        const response = await fetch('http://localhost:8080/rejectFriendRequest', {
+        const response = await fetch('http://localhost:8080/friends/rejectFriendRequest', {
           method: 'POST',
           headers: {
               'Content-Type' : 'application/json' 
